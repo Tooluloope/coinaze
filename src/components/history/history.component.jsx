@@ -45,6 +45,15 @@ export default class History extends Component {
     }
 
     async componentDidMount() {
+        if (!navigator.onLine) {
+            this.setState({ todayPrice: JSON.parse(localStorage.getItem('todayPrice')) });
+            this.setState({ oneDayPrice: JSON.parse(localStorage.getItem('twoDaysPrice')) });
+            this.setState({ twoDaysPrice: JSON.parse(localStorage.getItem('twoDaysPrice')) });
+            this.setState({ threeDaysPrice: JSON.parse(localStorage.getItem('threeDaysPrice')) });
+            this.setState({ fourDaysPrice: JSON.parse(localStorage.getItem('fourDaysPrice')) });
+            this.setState({ fiveDaysPrice: JSON.parse(localStorage.getItem('fiveDaysPrice')) });
+            this.setState({ error: JSON.parse(localStorage.getItem('error')) });
+        }
         try {
             this.setState({
             todayPrice :  await this.getAllPrices(0),
@@ -54,6 +63,28 @@ export default class History extends Component {
             fourDaysPrice: await this.getAllPrices(4),
             fiveDaysPrice: await this.getAllPrices(5),
         })
+        localStorage.setItem('todayPrice', JSON.stringify(await this.getAllPrices(0)));
+        
+
+        // getYesterdayPrice()
+        localStorage.setItem('oneDayPrice', JSON.stringify(await this.getAllPrices(1)));
+        
+
+        // getTwoDaysPrice()
+        localStorage.setItem('twoDaysPrice', JSON.stringify(await this.getAllPrices(2)));
+        
+        // getThreeDaysPrice()
+        localStorage.setItem('threeDaysPrice', JSON.stringify(await this.getAllPrices(3)));
+        
+        // getFourDaysPrice()
+        localStorage.setItem('fourDaysPrice', JSON.stringify(await this.getAllPrices(4)));
+       
+        localStorage.setItem('fiveDaysPrice', JSON.stringify(await this.getAllPrices(5)));
+
+        localStorage.setItem('error', '');
+
+        
+        
         } catch (error) {
             this.setState({error:'Exceeded the maximum API Call, You can just refresh the page'})
             
