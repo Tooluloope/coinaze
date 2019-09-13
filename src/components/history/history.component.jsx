@@ -8,12 +8,12 @@ export default class History extends Component {
     constructor(props) {
         super(props)
         this.state ={
-            todayPrice:'',
-            oneDayPrice:'',
-            twoDaysPrice:'',
-            threeDaysPrice:'',
-            fourDaysPrice:'',
-            fiveDaysPrice:'',
+            todayPrice:0,
+            oneDayPrice:0,
+            twoDaysPrice:0,
+            threeDaysPrice:0,
+            fourDaysPrice:0,
+            fiveDaysPrice:0,
             error:''
         }
     }
@@ -46,6 +46,7 @@ export default class History extends Component {
 
     async componentDidMount() {
         if (!navigator.onLine) {
+            debugger
             this.setState({ todayPrice: JSON.parse(localStorage.getItem('todayPrice')) });
             this.setState({ oneDayPrice: JSON.parse(localStorage.getItem('twoDaysPrice')) });
             this.setState({ twoDaysPrice: JSON.parse(localStorage.getItem('twoDaysPrice')) });
@@ -55,6 +56,7 @@ export default class History extends Component {
             this.setState({ error: JSON.parse(localStorage.getItem('error')) });
         }
         try {
+            
             this.setState({
             todayPrice :  await this.getAllPrices(0),
             oneDayPrice: await this.getAllPrices(1),
@@ -63,27 +65,27 @@ export default class History extends Component {
             fourDaysPrice: await this.getAllPrices(4),
             fiveDaysPrice: await this.getAllPrices(5),
         })
-        localStorage.setItem('todayPrice', JSON.stringify(await this.getAllPrices(0)));
+        localStorage.setItem('oneDayPrice', JSON.stringify(this.state.todayPrice));
         
 
         // getYesterdayPrice()
-        localStorage.setItem('oneDayPrice', JSON.stringify(await this.getAllPrices(1)));
+        localStorage.setItem('oneDayPrice', JSON.stringify(this.state.oneDayPrice));
         
 
         // getTwoDaysPrice()
-        localStorage.setItem('twoDaysPrice', JSON.stringify(await this.getAllPrices(2)));
+        localStorage.setItem('twoDaysPrice', JSON.stringify(this.state.twoDaysPrice));
         
         // getThreeDaysPrice()
-        localStorage.setItem('threeDaysPrice', JSON.stringify(await this.getAllPrices(3)));
+        localStorage.setItem('threeDaysPrice', JSON.stringify(this.state.threeDaysPrice));
         
         // getFourDaysPrice()
-        localStorage.setItem('fourDaysPrice', JSON.stringify(await this.getAllPrices(4)));
+        localStorage.setItem('fourDaysPrice', JSON.stringify(this.state.fourDaysPrice));
        
-        localStorage.setItem('fiveDaysPrice', JSON.stringify(await this.getAllPrices(5)));
+        localStorage.setItem('fiveDaysPrice', JSON.stringify(this.state.fiveDaysPrice));
 
         localStorage.setItem('error', '');
 
-        
+        debugger
         
         } catch (error) {
             this.setState({error:'Exceeded the maximum API Call, You can just refresh the page'})
@@ -96,6 +98,7 @@ export default class History extends Component {
 
 
     render() {
+        console.log(this.state)
         const {todayPrice,oneDayPrice,twoDaysPrice,threeDaysPrice,fourDaysPrice,fiveDaysPrice, error} = this.state
         return (
             <div className="history--section container">

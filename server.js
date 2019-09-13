@@ -6,12 +6,13 @@ const express = require('express')
 
     //initialize Pusher with your appId, key, secret and cluster
     const pusher = new Pusher({
-        appId: 'APP_ID',
-        key: 'APP_KEY',
-        secret: 'APP_SECRET',
-        cluster: 'YOUR_CLUSTER',
+        appId: '860907',
+        key: '3b7a51ed25ecfa7ab878',
+        secret: '5746982326559e7326a5',
+        cluster: 'eu',
         encrypted: true
     })
+    
 
     // Body parser middleware
     app.use(bodyParser.json())

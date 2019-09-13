@@ -7,6 +7,7 @@ import axios from 'axios';
 
 
 
+
 class Today extends Component {
     constructor(props) {
         super(props)
@@ -19,17 +20,29 @@ class Today extends Component {
 
     }
 
-    async componentDidMount() {
-        try {
-            const response = await axios.get(`https://min-api.cryptocompare.com/data/pricemulti?fsyms=BTC,ETH,LTC&tsyms=NGN`);
-            this.setState({
-                btcPrice: response.data.BTC.NGN,
-                ltcPrice: response.data.LTC.NGN,
-                ethPrice: response.data.ETH.NGN,
-            })
-        } catch (error) {
-            console.log(`Error: ${error.message}`)
+     componentDidMount() {
+
+        if (!navigator.onLine) {
+            this.setState({ btcPrice: localStorage.getItem('BTC') });
+            this.setState({ ethPrice: localStorage.getItem('ETH') });
+            this.setState({ ltcPrice: localStorage.getItem('LTC') });
         }
+        setInterval( async ()=> {
+             try {
+                const response = await axios.get(`https://min-api.cryptocompare.com/data/pricemulti?fsyms=BTC,ETH,LTC&tsyms=NGN`);
+                this.setState({
+                    btcPrice: response.data.BTC.NGN,
+                    ltcPrice: response.data.LTC.NGN,
+                    ethPrice: response.data.ETH.NGN,
+                })
+                localStorage.setItem('BTC', response.data.BTC.NGN);
+                localStorage.setItem('ETH', response.data.ETH.NGN);
+                localStorage.setItem('LTC', response.data.LTC.NGN);
+            } catch (error) {
+                console.log(`Error: ${error.message}`)
+            }
+        }, 2000)
+       
 
     }
 
@@ -39,7 +52,6 @@ class Today extends Component {
         const {btcPrice, ltcPrice, ethPrice } = this.state
 
         // debugger
-        console.log(this.state, btcPrice)
         return ( 
             <Container className='mb-3'>
                 <Grid container spacing={3}>
