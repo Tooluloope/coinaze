@@ -9,7 +9,7 @@
     "body-parser": "^1.19.0",
     "express": "^4.17.1",
     "moment": "^2.24.0",
-    "node-sass": "^4.12.0",
+    "node-sass": "^7.0.0",
     "pusher": "^2.2.2",
     "pusher-js": "^5.0.1",
     "react": "^16.9.0",
